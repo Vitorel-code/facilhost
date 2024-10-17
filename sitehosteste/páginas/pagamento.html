@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Pagamento - Fácil Host</title>
+</head>
+<body>
+    <div id="geral">
+        <div id="topo_geral">
+            <div id="titulo_logo">
+                <h1>Fácil Host</h1>
+                <a href="http://facilhost.com.br">www.facilhost.com.br</a>
+            </div>
+        </div>
+
+        <div id="pagamento-form">
+            <h2 id="Bem-vindo">Qual a forma de pagamento?</h2>
+
+            <form id="form-pagamento" onsubmit="return validarFormulario()">
+                <label for="forma-pagamento">Escolha a forma de pagamento:</label>
+                <select id="forma-pagamento" name="forma-pagamento" onchange="exibirFormularioPagamento()">
+                    <option value="">Selecione</option>
+                    <option value="cartao">Cartão de Crédito</option>
+                    <option value="boleto">Boleto Bancário</option>
+                    <option value="pix">Pix</option>
+                </select>
+
+                <!-- Formulário de Cartão de Crédito -->
+                <div id="cartao-form" class="form-pagamento" style="display: none;">
+                    <h3>Pagamento com Cartão de Crédito</h3>
+                    <label for="numero-cartao">Número do Cartão:</label>
+                    <input type="text" id="numero-cartao" name="numero-cartao" placeholder="0000 0000 0000 0000">
+
+                    <label for="nome-cartao">Nome no Cartão:</label>
+                    <input type="text" id="nome-cartao" name="nome-cartao" placeholder="Nome do titular">
+
+                    <label for="validade-cartao">Validade:</label>
+                    <input type="text" id="validade-cartao" name="validade-cartao" placeholder="MM/AA">
+
+                    <label for="cvv-cartao">CVV:</label>
+                    <input type="text" id="cvv-cartao" name="cvv-cartao" placeholder="CVV">
+                </div>
+
+                <!-- Formulário de Boleto Bancário -->
+                <div id="boleto-form" class="form-pagamento" style="display: none;">
+                    <h3>Pagamento com Boleto Bancário</h3>
+                    <p>Após a confirmação, seu boleto será gerado. Você poderá pagá-lo em qualquer banco ou aplicativo de pagamentos.</p>
+                    <p>O prazo para compensação é de até 3 dias úteis.</p>
+                    <button type="button">Gerar Boleto</button>
+                </div>
+
+                <!-- Formulário de Pix -->
+                <div id="pix-form" class="form-pagamento" style="display: none;">
+                    <h3>Pagamento com Pix</h3>
+                    <p>Use o QR code abaixo para realizar o pagamento via Pix:</p>
+                    <img src="qrcode-pix.png" alt="QR Code para pagamento via Pix">
+                </div>
+
+                <button type="submit">Concluir Compra</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function exibirFormularioPagamento() {
+            var formaPagamento = document.getElementById("forma-pagamento").value;
+
+            // Ocultar todos os formulários de pagamento
+            document.getElementById("cartao-form").style.display = "none";
+            document.getElementById("boleto-form").style.display = "none";
+            document.getElementById("pix-form").style.display = "none";
+
+            // Exibir o formulário correspondente à escolha
+            if (formaPagamento === "cartao") {
+                document.getElementById("cartao-form").style.display = "block";
+            } else if (formaPagamento === "boleto") {
+                document.getElementById("boleto-form").style.display = "block";
+            } else if (formaPagamento === "pix") {
+                document.getElementById("pix-form").style.display = "block";
+            }
+        }
+
+        function validarFormulario() {
+            var formaPagamento = document.getElementById("forma-pagamento").value;
+
+            // Verificar se uma forma de pagamento foi selecionada
+            if (formaPagamento === "") {
+                alert("Por favor, escolha uma forma de pagamento.");
+                return false; // Impede o envio do formulário
+            }
+
+            // Se a forma de pagamento for cartão, verificar campos obrigatórios
+            if (formaPagamento === "cartao") {
+                var numeroCartao = document.getElementById("numero-cartao").value;
+                var nomeCartao = document.getElementById("nome-cartao").value;
+                var validadeCartao = document.getElementById("validade-cartao").value;
+                var cvvCartao = document.getElementById("cvv-cartao").value;
+
+                if (numeroCartao === "" || nomeCartao === "" || validadeCartao === "" || cvvCartao === "") {
+                    alert("Por favor, preencha todos os campos do cartão.");
+                    return false; // Impede o envio do formulário
+                }
+            }
+
+            // Se todos os dados estiverem corretos, redireciona para a página de pagamento concluído
+            window.location.href = "pagamento-concluido.html";
+            return false; // Impede o envio padrão do formulário
+        }
+    </script>
+</body>
+</html>
